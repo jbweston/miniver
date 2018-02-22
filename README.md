@@ -3,7 +3,7 @@
 
 **Like [versioneer][versioneer], but smaller**
 
-Miniver is a **min**imal **ver**sioning tool that serves the same purpose
+Miniver is a **mini**mal **ver**sioning tool that serves the same purpose
 as [Versioneer][versioneer], except that it is not designed to be
 cross platform, and only works with Git.
 
