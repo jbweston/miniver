@@ -24,6 +24,7 @@ setup(
     version=version,
     url='https://github.com/jbweston/miniver',
     author='Joseph Weston',
+    author_email='joseph@weston.cloud',
     license='CC0',
     classifiers=[
         'Development Status :: 4 - Beta',
