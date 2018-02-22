@@ -1,3 +1,6 @@
+# -*- coding: utf-8 -*-
+# This file is part of 'miniver': https://github.com/jbweston/miniver
+#
 from collections import namedtuple
 import os
 import subprocess
