@@ -1,5 +1,6 @@
 # Miniver
-[![License: CC0-1.0][cc0_badge]][cc0]
+[![license: CC0-1.0](https://img.shields.io/pypi/l/miniver.svg)][cc0]
+[![PyPI version](https://img.shields.io/pypi/v/miniver.svg)][pypi]
 
 **Like [versioneer][versioneer], but smaller**
 
@@ -19,8 +20,8 @@ different platforms and Python versions (yet).
 
 
 [versioneer]: https://github.com/warner/python-versioneer
-[cc0_badge]: https://licensebuttons.net/l/zero/1.0/88x31.png
 [cc0]: http://creativecommons.org/publicdomain/zero/1.0/
+[pypi]: https://pypi.org/project/miniver/
 
 ## Usage
 Copy the contents of the `miniver` directory (in this repository) into your
