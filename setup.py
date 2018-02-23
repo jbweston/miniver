@@ -23,7 +23,7 @@ setup(
     description='minimal versioning tool',
     version=version,
     url='https://github.com/jbweston/miniver',
-    author='Joseph Weston',
+    author='Joseph Weston and Christoph Groth',
     author_email='joseph@weston.cloud',
     license='CC0',
     classifiers=[
