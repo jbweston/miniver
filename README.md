@@ -70,5 +70,11 @@ which you copied the contents of `miniver`).
 
 That's it!
 
+**PROTIP**: When starting a new project you can just [download minver][zip]
+and use that as the starting point! You will still need to add
+`your_package/_static_version.py export-subst` to your `.gitattributes`.
+
+[zip]: https://github.com/jbweston/miniver/archive/master.zip
+
 ## License
 Miniver is in the public domain under a CC0 license.
