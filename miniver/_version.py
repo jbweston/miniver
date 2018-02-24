@@ -134,11 +134,11 @@ def get_version_from_git_archive(version_info):
         return Version('unknown', dev=None, labels=[f'g{git_hash}'])
 
 
-version = get_version()
+__version__ = get_version()
 
 # The following section defines a module global 'cmdclass',
 # which can be used from setup.py. The 'package_name' and
-# 'version' module globals are used (but not modified).
+# '__version__' module globals are used (but not modified).
 
 def _write_version(fname):
     # This could be a hard link, so try to delete it first.  Is there any way
@@ -149,7 +149,7 @@ def _write_version(fname):
         pass
     with open(fname, 'w') as f:
         f.write("# This file has been created by setup.py.\n"
-                "version = '{}'\n".format(version))
+                "version = '{}'\n".format(__version__))
 
 
 class _build(build_orig):

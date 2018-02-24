@@ -1,3 +1,2 @@
-from . import version
-__version__ = version.version
-del version
+from ._version import __version__
+del _version

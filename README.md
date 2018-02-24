@@ -31,23 +31,22 @@ Then copy the following snippets into the appropriate files:
 
 ```python
 # Your package's __init__.py
-from . import version
-__version__ = version.version
-del version
+from ._version import __version__
+del _version
 ```
 
 ```python
 # Your project's setup.py
 
-# Loads version.py module without importing the whole package.
+# Loads _version.py module without importing the whole package.
 def get_version_and_cmdclass(package_name):
     import os
     from importlib.util import module_from_spec, spec_from_file_location
     spec = spec_from_file_location('version',
-                                   os.path.join(package_name, 'version.py'))
+                                   os.path.join(package_name, '_version.py'))
     module = module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.version, module.cmdclass
+    return module.__version__, module.cmdclass
 
 
 version, cmdclass = get_version_and_cmdclass('my_package')
