@@ -26,8 +26,7 @@ def get_version(version_file=STATIC_VERSION_FILE):
     with open(os.path.join(package_root, version_file), 'rb') as f:
         exec(f.read(), {}, version_info)
     version = version_info['version']
-    version_is_from_git = (version == "__use_git__")
-    if version_is_from_git:
+    if version == "__use_git__":
         version = get_version_from_git()
         if not version:
             version = get_version_from_git_archive(version_info)
