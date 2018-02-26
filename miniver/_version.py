@@ -69,7 +69,7 @@ def get_version_from_git():
     if not os.path.samefile(p.communicate()[0].decode().rstrip('\n'),
                             distr_root):
         # The top-level directory of the current Git repository is not the same
-        # as the root directory of the Kwant distribution: do not extract the
+        # as the root directory of the distribution: do not extract the
         # version from Git.
         return
 
