@@ -8,5 +8,5 @@
 version = "__use_git__"
 
 # These values are only set if the distribution was created with 'git archive'
-refnames =  "$Format:%D$"
+refnames = "$Format:%D$"
 git_hash = "$Format:%h$"
