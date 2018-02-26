@@ -24,10 +24,23 @@ different platforms and Python versions (yet).
 [pypi]: https://pypi.org/project/miniver/
 
 ## Usage
-Copy the contents of the `miniver` directory (in this repository) into your
-project's main package directory.
+The simplest way to use Miniver is to run the following in your project root:
+```
+curl https://raw.githubusercontent.com/jbweston/miniver/master/install-miniver | python - <your_package_directory>
+```
+This will grab the latest files from GitHub and set up Miniver for your project.
 
-Then copy the following snippets into the appropriate files:
+### I don't want to type that URL every time I use this
+You can `pip install miniver`, which will give you the `install-miniver` script.
+Then you can simply run the following from your project root to use Miniver:
+```
+install-miniver <your_package_directory>
+```
+
+### Can I use this without executing random code from the internet?
+Sure! Copy `miniver/_version.py` and `miniver/_static_version.py` from this
+repository into your package directory, then copy the following snippets into
+the appropriate files:
 
 ```python
 # Your package's __init__.py
@@ -68,12 +81,6 @@ replacing `'my_package'` in the above with the name of your package
 which you copied the contents of `miniver`).
 
 That's it!
-
-**PROTIP**: When starting a new project you can just [download minver][zip]
-and use that as the starting point! You will still need to add
-`your_package/_static_version.py export-subst` to your `.gitattributes`.
-
-[zip]: https://github.com/jbweston/miniver/archive/master.zip
 
 ## License
 Miniver is in the public domain under a CC0 license.

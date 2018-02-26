@@ -35,4 +35,5 @@ setup(
     ],
     packages=find_packages('.'),
     cmdclass=cmdclass,
+    scripts=['install-miniver']
 )

@@ -1,0 +1,141 @@
+#!/usr/bin/env python3
+# This file is part of 'miniver': https://github.com/jbweston/miniver
+
+import sys
+import os
+import os.path
+import argparse
+import tempfile
+import shutil
+import textwrap
+from zipfile import ZipFile
+from importlib.util import find_spec
+from urllib.request import urlretrieve
+
+try:
+    import miniver
+    del miniver
+    _miniver_is_installed = True
+except ImportError:
+    _miniver_is_installed = False
+
+# When we fetch miniver from local files
+_miniver_modules = ('_version', '_static_version')
+
+
+# When we fetch miniver from GitHub
+_miniver_zip_url = 'https://github.com/jbweston/miniver/archive/master.zip'
+_zipfile_root = 'miniver-master'  # tied to the fact that we fetch master.zip
+
+# File templates
+_setup_template = '''
+    # Loads version.py module without importing the whole package.
+    def get_version_and_cmdclass(package_path):
+        import os
+        from importlib.util import module_from_spec, spec_from_file_location
+        spec = spec_from_file_location('version',
+                                       os.path.join(package_path, '_version.py'))
+        module = module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module.__version__, module.cmdclass
+
+
+    version, cmdclass = get_version_and_cmdclass('{package_dir}')
+
+    setup(
+        ...,
+        version=version,
+        cmdclass=cmdclass,
+    )
+'''
+
+_init_template = 'from ._version import __version__'
+_gitattribute_template = '{package_dir}/_static_version.py export-subst'
+
+
+def _line_in_file(to_find, filename):
+    """Return True if the specified line exists in the named file."""
+    assert '\n' not in to_find
+    try:
+        with open(filename) as f:
+            for line in f:
+                if to_find in line:
+                    return True
+            return False
+    except FileNotFoundError:
+        return False
+
+
+def _write_line(content, filename):
+    assert '\n' not in content
+    if not _line_in_file(content, filename):
+        with open(filename, 'a') as f:
+            f.write(content)
+
+
+def _fail(msg):
+    print(msg, file=sys.stderr)
+    print('Miniver was not installed', file=sys.stderr)
+    sys.exit(1)
+
+
+def extract_miniver_from_github():
+    filename, _ = urlretrieve(_miniver_zip_url)
+    z = ZipFile(filename)
+    tmpdir = tempfile.mkdtemp()
+    input_paths = ['/'.join((_zipfile_root, 'miniver', module+'.py'))
+                   for module in _miniver_modules]
+    for p in input_paths:
+        z.extract(p, path=tmpdir)
+    return [os.path.join(tmpdir, *p.split()) for p in input_paths]
+
+
+def extract_miniver_from_local():
+    return [find_spec('.' + module, package='miniver').origin
+            for module in _miniver_modules]
+
+
+def get_args():
+    parser = argparse.ArgumentParser(
+        description="Install 'miniver' into the current Python package")
+    parser.add_argument('package_directory',
+                        help="Directory to install 'miniver' into.")
+    return parser.parse_args().package_directory
+
+
+def main():
+    package_dir = get_args()
+    if not os.path.isdir(package_dir):
+        _fail("Directory '{}' does not exist".format(package_dir))
+    if package_dir != os.path.relpath(package_dir):
+        _fail("'{}' is not a relative directory".format(package_dir))
+
+    # Get miniver files
+    if _miniver_is_installed:
+        miniver_paths = extract_miniver_from_local()
+    else:
+        miniver_paths = extract_miniver_from_github()
+    output_paths = [os.path.join(package_dir, os.path.basename(path))
+                    for path in miniver_paths]
+
+    for path in output_paths:
+        if os.path.exists(path):
+            _fail("'{}' already exists".format(path))
+
+    # Write content to local package directory
+    for path, output_path in zip(miniver_paths, output_paths):
+        shutil.copy(path, output_path)
+    _write_line(_gitattribute_template.format(package_dir=package_dir),
+                '.gitattributes')
+    _write_line(_init_template.format(package_dir=package_dir),
+                os.path.join(package_dir, '__init__.py'))
+
+    msg = '\n'.join(textwrap.wrap(
+        "Miniver is installed into '{package_dir}/'. "
+        "You still have to copy the following snippet into your 'setup.py':"
+    ))
+    print('\n'.join((msg, _setup_template)).format(package_dir=package_dir))
+
+
+if __name__ == '__main__':
+    main()
