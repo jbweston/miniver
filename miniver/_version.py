@@ -44,10 +44,10 @@ def semver_format(version_info):
     if dev:
         if release.endswith('-dev'):
             version_parts.append(dev)
-        elif release.contains('-'):
+        elif '-' in release:
             version_parts.append('.dev{}'.format(dev))
         else:
-            version_parts.append('-dev{}'.format(dev))
+            version_parts.append('.dev{}'.format(dev))
 
     if labels:
         version_parts.append('+')
@@ -127,10 +127,10 @@ def get_version_from_git_archive(version_info):
     refs = set(r.strip() for r in refnames.split(","))
     version_tags = set(r[len(VTAG):] for r in refs if r.startswith(VTAG))
     if version_tags:
-        release, *_ = sorted(version_tags)  # prefer e.g. "2.0" over "2.0rc1"
+        release, _ = sorted(version_tags)  # prefer e.g. "2.0" over "2.0rc1"
         return Version(release, dev=None, labels=None)
     else:
-        return Version('unknown', dev=None, labels=[f'g{git_hash}'])
+        return Version('unknown', dev=None, labels=["{git_hash}".format(git_hash = git_hash)])
 
 
 __version__ = get_version()
