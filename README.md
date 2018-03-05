@@ -62,7 +62,8 @@ def get_version_and_cmdclass(package_name):
         return module.__version__, module.cmdclass
     except: # Python 2
         import imp
-        module = imp.load_source(package_name.split('.')[-1], os.path.join(package_name, "_version.py"))
+        module = imp.load_source(package_name.split('.')[-1],
+                                 os.path.join(package_name, "_version.py"))
         return module.__version__, module.cmdclass
 
 
