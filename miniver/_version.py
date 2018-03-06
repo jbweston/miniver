@@ -151,16 +151,20 @@ def _write_version(fname):
                 "version = '{}'\n".format(__version__))
 
 
-class _build(build_orig):
+# The following classes subclass `object` to become new-style classes with
+# Python 2; and calling super() with arguments is another workaround in order
+# to support Python 2.
+
+class _build(build_orig, object):
     def run(self):
-        super().run()
+        super(_build, self).run()
         _write_version(os.path.join(self.build_lib, package_name,
                                     STATIC_VERSION_FILE))
 
 
-class _sdist(sdist_orig):
+class _sdist(sdist_orig, object):
     def make_release_tree(self, base_dir, files):
-        super().make_release_tree(base_dir, files)
+        super(_sdist, self).make_release_tree(base_dir, files)
         _write_version(os.path.join(base_dir, package_name,
                                     STATIC_VERSION_FILE))
 
