@@ -12,6 +12,10 @@ from zipfile import ZipFile
 from importlib.util import find_spec
 from urllib.request import urlretrieve
 
+if sys.version_info < (3, 5):
+    print('Miniver needs at least Python 3.5')
+    sys.exit(1)
+
 try:
     import miniver
     del miniver

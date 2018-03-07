@@ -3,6 +3,9 @@
 from setuptools import setup, find_packages
 import sys
 
+if sys.version_info < (3, 5):
+    print('Miniver needs at least Python 3.5.')
+    sys.exit(1)
 
 # Loads version.py module without importing the whole package.
 def get_version_and_cmdclass(package_name):
@@ -31,7 +34,7 @@ setup(
         'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
         'Topic :: Software Development :: Version Control :: Git',
         'Intended Audience :: Developers',
-        'Programming Language :: Python',
+        'Programming Language :: Python :: 3 :: Only',
     ],
     packages=find_packages('.'),
     cmdclass=cmdclass,
