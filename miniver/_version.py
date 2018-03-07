@@ -130,7 +130,7 @@ def get_version_from_git_archive(version_info):
         release, *_ = sorted(version_tags)  # prefer e.g. "2.0" over "2.0rc1"
         return Version(release, dev=None, labels=None)
     else:
-        return Version('unknown', dev=None, labels=[f'g{git_hash}'])
+        return Version('unknown', dev=None, labels=['g{}'.format(git_hash)])
 
 
 __version__ = get_version()
