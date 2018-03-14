@@ -21,7 +21,7 @@ tested on Debian Linux and Mac OSX (so far).
 Support for Python 2 is not a goal, as Python 2 is fast approaching its
 end of life (2020), and we want to encourage people to use Python 3!
 That being said, Christian Marquardt has a [fork that also
-works with Python 2](https://github.com/cmarquardt/miniver)
+works with Python 2](https://github.com/cmarquardt/miniver2)
 
 [versioneer]: https://github.com/warner/python-versioneer
 [cc0]: http://creativecommons.org/publicdomain/zero/1.0/
