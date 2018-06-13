@@ -6,7 +6,7 @@ import os
 import subprocess
 import sys
 
-from distutils.command.build import build as build_orig
+from distutils.command.build_py import build_py as build_py_orig
 from setuptools.command.sdist import sdist as sdist_orig
 
 Version = namedtuple('Version', ('release', 'dev', 'labels'))
@@ -149,7 +149,7 @@ def _write_version(fname):
                 "version = '{}'\n".format(__version__))
 
 
-class _build(build_orig):
+class _build_py(build_py_orig):
     def run(self):
         super().run()
         _write_version(os.path.join(self.build_lib, package_name,
@@ -163,4 +163,4 @@ class _sdist(sdist_orig):
                                     STATIC_VERSION_FILE))
 
 
-cmdclass = dict(sdist=_sdist, build=_build)
+cmdclass = dict(sdist=_sdist, build_py=_build_py)
