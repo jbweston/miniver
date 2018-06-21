@@ -20,10 +20,14 @@ def get_version_and_cmdclass(package_name):
 
 version, cmdclass = get_version_and_cmdclass('miniver')
 
+with open('README.md') as readme_file:
+    long_description = readme_file.read()
 
 setup(
     name='miniver',
     description='minimal versioning tool',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     version=version,
     url='https://github.com/jbweston/miniver',
     author='Joseph Weston and Christoph Groth',
