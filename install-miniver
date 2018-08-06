@@ -22,6 +22,7 @@ try:
     del miniver
     _miniver_is_installed = True
 except ImportError:
+    _miniver_version = 'unknown'
     _miniver_is_installed = False
 
 # When we fetch miniver from local files
