@@ -70,11 +70,12 @@ def get_version_from_git():
         return
 
     # git describe --first-parent does not take into account tags from branches
-    # that were merged-in.
+    # that were merged-in. The '--long' flag gets us the 'dev' version and
+    # git hash, '--always' returns the git hash even if there are no tags.
     for opts in [['--first-parent'], []]:
         try:
             p = subprocess.Popen(
-                ['git', 'describe', '--long'] + opts,
+                ['git', 'describe', '--long', '--always'] + opts,
                 cwd=distr_root,
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except OSError:
@@ -83,9 +84,20 @@ def get_version_from_git():
             break
     else:
         return
-    description = p.communicate()[0].decode().strip('v').rstrip('\n')
 
-    release, dev, git = description.rsplit('-', 2)
+    description = (p.communicate()[0]
+        .decode()
+        .strip('v')  # Tags can have a leading 'v', but the version should not
+        .rstrip('\n')
+        .rsplit('-', 2))  # Split the latest tag, commits since tag, and hash
+
+    try:
+        release, dev, git = description
+    except ValueError:  # No tags, only the git hash
+        git, = description
+        release = 'unknown'
+        dev = None
+
     labels = []
     if dev == "0":
         dev = None
