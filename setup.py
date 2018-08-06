@@ -7,6 +7,7 @@ if sys.version_info < (3, 5):
     print('Miniver needs at least Python 3.5.')
     sys.exit(1)
 
+
 # Loads version.py module without importing the whole package.
 def get_version_and_cmdclass(package_name):
     import os

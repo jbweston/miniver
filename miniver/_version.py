@@ -73,9 +73,10 @@ def get_version_from_git():
     # that were merged-in.
     for opts in [['--first-parent'], []]:
         try:
-            p = subprocess.Popen(['git', 'describe', '--long'] + opts,
-                                 cwd=distr_root,
-                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            p = subprocess.Popen(
+                ['git', 'describe', '--long'] + opts,
+                cwd=distr_root,
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         except OSError:
             return
         if p.wait() == 0:
@@ -94,7 +95,7 @@ def get_version_from_git():
     try:
         p = subprocess.Popen(['git', 'diff', '--quiet'], cwd=distr_root)
     except OSError:
-        labels.append('confused') # This should never happen.
+        labels.append('confused')  # This should never happen.
     else:
         if p.wait() == 1:
             labels.append('dirty')
@@ -131,6 +132,7 @@ def get_version_from_git_archive(version_info):
 
 
 __version__ = get_version()
+
 
 # The following section defines a module global 'cmdclass',
 # which can be used from setup.py. The 'package_name' and
