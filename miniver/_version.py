@@ -94,7 +94,8 @@ def get_version_from_git():
     try:
         release, dev, git = description
     except ValueError:  # No tags, only the git hash
-        git, = description
+        # prepend 'g' to match with format returned by 'git describe'
+        git = 'g{}'.format(*description)
         release = 'unknown'
         dev = None
 
