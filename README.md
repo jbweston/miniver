@@ -66,6 +66,7 @@ del _version
 
 ```python
 # Your project's setup.py
+from setuptools import setup, find_packages
 
 # Loads _version.py module without importing the whole package.
 def get_version_and_cmdclass(package_name):
@@ -82,6 +83,7 @@ version, cmdclass = get_version_and_cmdclass('my_package')
 
 setup(
     name='my_package',
+    packages=find_packages(),
     version=version,
     cmdclass=cmdclass,
 )

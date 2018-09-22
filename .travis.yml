@@ -1,0 +1,44 @@
+language: python
+python:
+  - "3.5"
+  - "3.6"
+
+install:
+  - cd ..
+  - git init my_package
+  - cd my_package
+  - mkdir my_package
+
+  - line_code_block=`grep -n "\\\`\\\`\\\`" ../miniver/README.md |  sed 's/^\([0-9]\+\):.*$/\1/'`
+
+  - line_start_setup=`grep -n "# Your project's setup.py" ../miniver/README.md |  sed 's/^\([0-9]\+\):.*$/\1/'`
+  - for line in $line_code_block; do if [ "$line" -gt "$line_start_setup" ]; then line_end_setup=`expr $line - 1`; break; fi done
+  - sed -n "${line_start_setup},${line_end_setup}p" ../miniver/README.md > setup.py
+
+  - line_gitattributes_start=`grep -n "# Your project's .gitattributes" ../miniver/README.md |  sed 's/^\([0-9]\+\):.*$/\1/'`
+  - for line in $line_code_block; do if [ "$line" -gt "$line_gitattributes_start" ]; then line_gitattributes_end=`expr $line - 1`; break; fi done
+  - sed -n "${line_gitattributes_start},${line_gitattributes_end}p" ../miniver/README.md > .gitattributes
+
+  - line_init_start=`grep -n "# Your package's __init__.py" ../miniver/README.md |  sed 's/^\([0-9]\+\):.*$/\1/'`
+  - for line in $line_code_block; do if [ "$line" -gt "$line_init_start" ]; then line_init_end=`expr $line - 1`; break; fi done
+  - sed -n "${line_init_start},${line_init_end}p" ../miniver/README.md > my_package/__init__.py
+
+  - cp ../miniver/miniver/_static_version.py my_package/.
+  - cp ../miniver/miniver/_version.py my_package/.
+
+  - git add .
+  - git commit -m 'Initialization of package'
+  - git tag -a 0.0.0 -m 'First version for miniver'
+  - pip install -e .
+script:
+  - python -c "import my_package; assert my_package.__version__ == '0.0.0'"
+  - cd ../my_package
+  - echo "# Extra comment" >> setup.py
+  - python -c "import my_package; assert my_package.__version__.endswith('dirty')"
+  - python -c "import my_package; assert my_package.__version__.startswith('0.0.0')"
+  - git commit -a -m 'new comment'
+  - python -c "import my_package; assert my_package.__version__.startswith('0.0.0.dev1')"
+  - git tag -a -m '0.0.1'
+  - python -c "import my_package; assert my_package.__version__ == '0.0.1'"
+  # Just testing my travis script
+  - python -c "assert False"
