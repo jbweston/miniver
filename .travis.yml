@@ -1,0 +1,65 @@
+language: python
+
+matrix:
+  include:
+    - os: linux
+      python: 3.5
+    - os: linux
+      python: 3.6
+    - os: linux
+      python: 3.7
+      dist: xenial
+      sudo: true
+    - os: osx
+      language: generic
+      env: PYTHON=3.5.6
+    - os: osx
+      language: generic
+      env: PYTHON=3.6.6
+    - os: osx
+      language: generic
+      env: PYTHON=3.7.0
+
+# Taken from https://pythonhosted.org/CodeChat/.travis.yml.html#before-install
+before_install: |
+  if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+    brew update
+    # Per the `pyenv homebrew recommendations <https://github.com/yyuu/pyenv/wiki#suggested-build-environment>`_.
+    brew install openssl readline
+    # See https://docs.travis-ci.com/user/osx-ci-environment/#A-note-on-upgrading-packages.
+    # I didn't do this above because it works and I'm lazy.
+    brew outdated pyenv || brew upgrade pyenv
+    # virtualenv doesn't work without pyenv knowledge. venv in Python 3.3
+    # doesn't provide Pip by default. So, use `pyenv-virtualenv <https://github.com/yyuu/pyenv-virtualenv/blob/master/README.md>`_.
+    brew install pyenv-virtualenv
+    pyenv install $PYTHON
+    # I would expect something like ``pyenv init; pyenv local $PYTHON`` or
+    # ``pyenv shell $PYTHON`` would work, but ``pyenv init`` doesn't seem to
+    # modify the Bash environment. ??? So, I hand-set the variables instead.
+    export PYENV_VERSION=$PYTHON
+    export PATH="/Users/travis/.pyenv/shims:${PATH}"
+    pyenv-virtualenv venv
+    source venv/bin/activate
+    # A manual check that the correct version of Python is running.
+    python --version
+  fi
+
+install:
+  - cd ..
+  - git init my_package
+  - cd my_package
+  - python ../miniver/ci/create_package.py
+  - git add .
+  - git commit -m 'Initialization of package'
+  - git tag -a 0.0.0 -m 'First version for miniver'
+  - pip install -e .
+script:
+  - python -c "import my_package; assert my_package.__version__ == '0.0.0'"
+  - cd ../my_package
+  - echo "# Extra comment" >> setup.py
+  - python -c "import my_package; assert my_package.__version__.endswith('dirty')"
+  - python -c "import my_package; assert my_package.__version__.startswith('0.0.0')"
+  - git commit -a -m 'new comment'
+  - python -c "import my_package; assert my_package.__version__.startswith('0.0.0.dev1')"
+  - git tag -a 0.0.1 -m '0.0.1'
+  - python -c "import my_package; assert my_package.__version__ == '0.0.1'"
