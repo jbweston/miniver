@@ -1,0 +1,37 @@
+environment:
+  matrix:
+    - PYTHON: C:\Python35-x64
+    - PYTHON: C:\Python36
+    - PYTHON: C:\Python36-x64
+    - PYTHON: C:\Python37
+    - PYTHON: C:\Python37-x64
+matrix:
+  fast_finish: true
+install:
+  - "SET PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  # Git won't let us do anything without this.
+  - git config --global user.email "you@example.com"
+  - git config --global user.name "Your Name"
+  - "python --version"
+  - cd ..
+  - git init my_package
+  - cd my_package
+  - python ../miniver/ci/create_package.py
+  - git add .
+  - git commit -m "Initialization of package"
+  - git tag -a 0.0.0 -m "First version for miniver"
+  - pip install -e .
+
+# Not a .NET project
+build: false
+
+test_script:
+  - python -c "import my_package; assert my_package.__version__ == '0.0.0'
+  - cd ../my_package
+  - "echo # Extra comment >> setup.py"
+  - python -c "import my_package; assert my_package.__version__.endswith('dirty')"
+  - python -c "import my_package; assert my_package.__version__.startswith('0.0.0')"
+  - git commit -a -m "new comment"
+  - python -c "import my_package; assert my_package.__version__.startswith('0.0.0.dev1')"
+  - git tag -a 0.0.1 -m "0.0.1"
+  - python -c "import my_package; assert my_package.__version__ == '0.0.1'"

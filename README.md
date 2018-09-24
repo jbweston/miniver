@@ -5,8 +5,8 @@
 **Like [versioneer][versioneer], but smaller**
 
 Miniver is a **mini**mal **ver**sioning tool that serves the same purpose
-as [Versioneer][versioneer], except that it is not designed to be
-cross platform, and only works with Git.
+as [Versioneer][versioneer], except that it only works with Git and
+multiplatform support is still experimental.
 
 #### Why would I use this?
 If you are developing a Python package inside a Git repository and
@@ -16,7 +16,8 @@ version strings everywhere.
 This is the same problem that Versioneer solves, but Miniver is less
 than 200 lines of code, whereas Versioneer is over 2000. The tradeoff
 is that Miniver only works with Git and Python 3.5 (or above), and has only been
-tested on Debian Linux and Mac OSX (so far).
+tested on Debian Linux and Mac OSX (automated with Travis) and for Windows
+on Appveyor.
 
 Support for Python 2 is not a goal, as Python 2 is fast approaching its
 end of life (2020), and we want to encourage people to use Python 3!
