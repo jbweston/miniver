@@ -1,6 +1,8 @@
 # Miniver
 [![license: CC0-1.0](https://img.shields.io/pypi/l/miniver.svg)][cc0]
 [![PyPI version](https://img.shields.io/pypi/v/miniver.svg)][pypi]
+[![Travis build](https://travis-ci.org/jbweston/miniver.svg)][travis]
+[![Appveyor build](https://ci.appveyor.com/api/projects/status/v9q0hmjfm9qxdsi4?svg=true)][appveyor]
 
 **Like [versioneer][versioneer], but smaller**
 
@@ -27,6 +29,8 @@ works with Python 2](https://github.com/cmarquardt/miniver2)
 [versioneer]: https://github.com/warner/python-versioneer
 [cc0]: http://creativecommons.org/publicdomain/zero/1.0/
 [pypi]: https://pypi.org/project/miniver/
+[travis]: https://travis-ci.org/jbweston/miniver
+[appveyor]: https://ci.appveyor.com/project/jbweston/miniver
 
 ## Usage
 The simplest way to use Miniver is to run the following in your project root:
