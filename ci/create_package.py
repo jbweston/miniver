@@ -9,6 +9,7 @@ copyfile('../miniver/miniver/_version.py',
 
 README_filename = '../miniver/README.md'
 
+
 def write_snippet_from_readme(outfile, start_marker, file_header=None):
     # Create the setup file
     with open(README_filename) as f:
@@ -26,6 +27,7 @@ def write_snippet_from_readme(outfile, start_marker, file_header=None):
                 if line.startswith('```'):
                     break
                 out.write(line)
+
 
 write_snippet_from_readme("setup.py",
                           "# Your project's setup.py",
