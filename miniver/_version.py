@@ -41,6 +41,10 @@ def get_static_version_info(version_file=STATIC_VERSION_FILE):
     return version_info
 
 
+def version_is_from_git(version_file=STATIC_VERSION_FILE):
+    return get_static_version_info(version_file)['version'] == '__use_git__'
+
+
 def pep440_format(version_info):
     release, dev, labels = version_info
 
