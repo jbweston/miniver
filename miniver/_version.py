@@ -52,7 +52,7 @@ def pep440_format(version_info):
     if dev:
         if release.endswith('-dev') or release.endswith('.dev'):
             version_parts.append(dev)
-        else:  # prefer PEP440 over stric adhesion to semver
+        else:  # prefer PEP440 over strict adhesion to semver
             version_parts.append('.dev{}'.format(dev))
 
     if labels:
@@ -94,11 +94,13 @@ def get_version_from_git():
     else:
         return
 
-    description = (p.communicate()[0]
+    description = (
+        p.communicate()[0]
         .decode()
         .strip('v')  # Tags can have a leading 'v', but the version should not
         .rstrip('\n')
-        .rsplit('-', 2))  # Split the latest tag, commits since tag, and hash
+        .rsplit('-', 2)  # Split the latest tag, commits since tag, and hash
+    )
 
     try:
         release, dev, git = description
