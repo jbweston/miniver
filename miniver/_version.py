@@ -52,7 +52,7 @@ def pep440_format(version_info):
     if dev:
         if release.endswith('-dev') or release.endswith('.dev'):
             version_parts.append(dev)
-        else:  # prefer PEP440 over stric adhesion to semver
+        else:  # prefer PEP440 over strict adhesion to semver
             version_parts.append('.dev{}'.format(dev))
 
     if labels:
