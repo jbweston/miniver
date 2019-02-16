@@ -34,9 +34,12 @@ _miniver_zip_url = 'https://github.com/jbweston/miniver/archive/master.zip'
 _zipfile_root = 'miniver-master'  # tied to the fact that we fetch master.zip
 
 # File templates
-_setup_template = '''
-    # Loads version.py module without importing the whole package.
+_setup_template = textwrap.dedent('''
     def get_version_and_cmdclass(package_path):
+        """Load version.py module without importing the whole package.
+
+        Template code from miniver
+        """
         import os
         from importlib.util import module_from_spec, spec_from_file_location
         spec = spec_from_file_location('version',
@@ -53,7 +56,7 @@ _setup_template = '''
         version=version,
         cmdclass=cmdclass,
     )
-'''
+''')
 
 _static_version_template = textwrap.dedent('''\
     # -*- coding: utf-8 -*-
