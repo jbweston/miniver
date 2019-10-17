@@ -35,7 +35,7 @@ works with Python 2](https://github.com/cmarquardt/miniver2)
 ## Usage
 The simplest way to use Miniver is to run the following in your project root:
 ```
-curl https://raw.githubusercontent.com/jbweston/miniver/master/install-miniver | python - <your_package_directory>
+curl https://raw.githubusercontent.com/jbweston/miniver/master/bin/miniver | python - install <your_package_directory>
 ```
 This will grab the latest files from GitHub and set up Miniver for your project.
 
@@ -52,10 +52,10 @@ curl https://raw.githubusercontent.com/jbweston/miniver/master/unannotated-tags.
 ```
 
 ### I don't want to type that URL every time I use this
-You can `pip install miniver`, which will give you the `install-miniver` script.
+You can `pip install miniver`, which will give you the `miniver` command.
 Then you can simply run the following from your project root to use Miniver:
 ```
-install-miniver <your_package_directory>
+miniver install <your_package_directory>
 ```
 
 ### Can I use this without executing random code from the internet?

@@ -132,19 +132,24 @@ def extract_miniver_from_local():
     ]
 
 
-def get_args():
-    parser = argparse.ArgumentParser(
-        description="Install 'miniver' into the current Python package"
-    )
+def get_parser():
+    parser = argparse.ArgumentParser(description="Interact with miniver")
     parser.add_argument("-v", "--version", action="version", version=_miniver_version)
-    parser.add_argument(
+    # TODO: when we can depend on Python 3.7 make this "add_subparsers(required=True)"
+    subparsers = parser.add_subparsers()
+    # 'install' command
+    install_parser = subparsers.add_parser(
+        "install", help="Install miniver into the current Python package"
+    )
+    install_parser.add_argument(
         "package_directory", help="Directory to install 'miniver' into."
     )
-    return parser.parse_args().package_directory
+    install_parser.set_defaults(dispatch=install)
+    return parser
 
 
-def main():
-    package_dir = get_args()
+def install(args):
+    package_dir = args.package_directory
     if not os.path.isdir(package_dir):
         _fail("Directory '{}' does not exist".format(package_dir))
     if package_dir != os.path.relpath(package_dir):
@@ -184,6 +189,17 @@ def main():
         )
     )
     print("\n".join((msg, _setup_template)).format(package_dir=package_dir))
+
+
+def main():
+    parser = get_parser()
+    args = parser.parse_args()
+    # TODO: remove this check when we can rely on Python 3.7 and
+    #       can make subparsers required.
+    if "dispatch" in args:
+        args.dispatch(args)
+    else:
+        parser.parse_args(['-h'])
 
 
 if __name__ == "__main__":
