@@ -17,9 +17,7 @@ version strings everywhere.
 
 This is the same problem that Versioneer solves, but Miniver is less
 than 200 lines of code, whereas Versioneer is over 2000. The tradeoff
-is that Miniver only works with Git and Python 3.5 (or above), and has only been
-tested on Debian Linux and Mac OSX (automated with Travis) and for Windows
-on Appveyor.
+is that Miniver only works with Git and Python 3.5 (or above).
 
 Support for Python 2 is not a goal, as Python 2 is fast approaching its
 end of life (2020), and we want to encourage people to use Python 3!
