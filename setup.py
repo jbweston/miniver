@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 import sys
 
 if sys.version_info < (3, 5):
-    print('Miniver needs at least Python 3.5.')
+    print("Miniver needs at least Python 3.5.")
     sys.exit(1)
 
 
@@ -12,42 +12,42 @@ if sys.version_info < (3, 5):
 def get_version_and_cmdclass(package_name):
     import os
     from importlib.util import module_from_spec, spec_from_file_location
-    spec = spec_from_file_location('version',
-                                   os.path.join(package_name, '_version.py'))
+
+    spec = spec_from_file_location("version", os.path.join(package_name, "_version.py"))
     module = module_from_spec(spec)
     spec.loader.exec_module(module)
     return module.__version__, module.cmdclass
 
 
-version, cmdclass = get_version_and_cmdclass('miniver')
+version, cmdclass = get_version_and_cmdclass("miniver")
 
-with open('README.md') as readme_file:
+with open("README.md") as readme_file:
     long_description = readme_file.read()
 
 setup(
-    name='miniver',
-    description='minimal versioning tool',
+    name="miniver",
+    description="minimal versioning tool",
     long_description=long_description,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     version=version,
-    url='https://github.com/jbweston/miniver',
-    author='Joseph Weston and Christoph Groth',
-    author_email='joseph@weston.cloud',
-    license='CC0',
+    url="https://github.com/jbweston/miniver",
+    author="Joseph Weston and Christoph Groth",
+    author_email="joseph@weston.cloud",
+    license="CC0",
     classifiers=[
-        'Development Status :: 4 - Beta',
-        'License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication',
-        'Topic :: Software Development :: Version Control :: Git',
-        'Intended Audience :: Developers',
-        'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Operating System :: POSIX :: Linux',
-        'Operating System :: MacOS :: MacOS X',
-        'Operating System :: Microsoft :: Windows',
+        "Development Status :: 4 - Beta",
+        "License :: CC0 1.0 Universal (CC0 1.0) Public Domain Dedication",
+        "Topic :: Software Development :: Version Control :: Git",
+        "Intended Audience :: Developers",
+        "Programming Language :: Python :: 3 :: Only",
+        "Programming Language :: Python :: 3.5",
+        "Programming Language :: Python :: 3.6",
+        "Programming Language :: Python :: 3.7",
+        "Operating System :: POSIX :: Linux",
+        "Operating System :: MacOS :: MacOS X",
+        "Operating System :: Microsoft :: Windows",
     ],
-    packages=find_packages('.'),
+    packages=find_packages("."),
     cmdclass=cmdclass,
-    scripts=['bin/miniver']
+    scripts=["bin/miniver"],
 )

@@ -199,7 +199,7 @@ def main():
     if "dispatch" in args:
         args.dispatch(args)
     else:
-        parser.parse_args(['-h'])
+        parser.parse_args(["-h"])
 
 
 if __name__ == "__main__":
