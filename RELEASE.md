@@ -15,7 +15,7 @@ These instructions can also be used as a starting point for packages that use mi
 2. Create a *signed*, *annotated* release tag: `git tag -as vX.Y.Z -m 'version X.Y.Z'`
 3. Create source and binary distributions: `python setup.py sdist bdist_wheel`
 4. Create an empty commit to start development towards the next release: `git commit --allow-empty -m 'start development towards A.B.C'`
-5. Create a *signed*, *annotated* pre-release tag: `git tag -as vA.B.C-dev -m 'work towards A.B.C'
+5. Create a *signed*, *annotated* pre-release tag: `git tag -as vA.B.C-dev -m 'work towards A.B.C'`
 
 ## Publish the release
 1. Push the new version and development tags: `git push upstream vX.Y.Z vA.B.C-dev`
