@@ -5,7 +5,7 @@ from collections import namedtuple
 import os
 import subprocess
 
-from distutils.command.build_py import build_py as build_py_orig
+from setuptools.command.build_py import build_py as build_py_orig
 from setuptools.command.sdist import sdist as sdist_orig
 
 Version = namedtuple("Version", ("release", "dev", "labels"))
