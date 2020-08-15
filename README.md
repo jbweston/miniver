@@ -27,8 +27,7 @@ works with Python 2](https://github.com/cmarquardt/miniver2)
 [versioneer]: https://github.com/warner/python-versioneer
 [cc0]: http://creativecommons.org/publicdomain/zero/1.0/
 [pypi]: https://pypi.org/project/miniver/
-[travis]: https://travis-ci.org/jbweston/miniver
-[appveyor]: https://ci.appveyor.com/project/jbweston/miniver
+[ci]: https://github.com/jbweston/miniver/actions?query=workflow%3Atest
 
 ## Usage
 The simplest way to use Miniver is to run the following in your project root:
