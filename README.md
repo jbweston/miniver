@@ -1,8 +1,8 @@
 # Miniver
 [![license: CC0-1.0](https://img.shields.io/pypi/l/miniver.svg)][cc0]
 [![PyPI version](https://img.shields.io/pypi/v/miniver.svg)][pypi]
-[![Travis build](https://travis-ci.org/jbweston/miniver.svg)][travis]
-[![Appveyor build](https://ci.appveyor.com/api/projects/status/v9q0hmjfm9qxdsi4?svg=true)][appveyor]
+[![CI status](https://github.com/jbweston/miniver/workflows/test/badge.svg)][ci]
+
 
 **Like [versioneer][versioneer], but smaller**
 
