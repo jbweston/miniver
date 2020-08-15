@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow distributions that place packages in a "src" directory
 ### Changed
 - Replace tool "install-miniver" with a tool "miniver" with a command "install"
+### Fixed
+- Use "build_py" from setuptools, rather than distutils, which prevents a warning
+  being displayed when using more recent setuptools versions
 
 ## [0.6.0] - 2019-02-17
 ### Fixed
