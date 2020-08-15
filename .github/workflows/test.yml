@@ -1,0 +1,46 @@
+name: test
+
+on: [push]
+
+jobs:
+  run:
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      max-parallel: 4
+      matrix:
+        operating-system: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: [3.5, 3.6, 3.7, 3.8]
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Set up Git
+      run: |
+        git config --global user.email "you@example.com"
+        git config --global user.name "Your Name"
+        python --version
+    - name: Set up dummy Python project with miniver
+      run: |
+        cd ..
+        git init my_package
+        cd my_package
+        python ../miniver/ci/create_package.py
+        git add .
+        git commit -m "Initialization of package"
+        git tag -a 0.0.0 -m "First version for miniver"
+    - name: Install dummy Python project with miniver
+      run: |
+        cd ../my_package
+        pip install -e .
+    - name: Test versioning of dummy project
+      run: |
+        python -c "import my_package; assert my_package.__version__ == '0.0.0'"
+        cd ../my_package
+        echo "# Extra comment" >> setup.py
+        python -c "import my_package; assert my_package.__version__.endswith('dirty')"
+        python -c "import my_package; assert my_package.__version__.startswith('0.0.0')"
+        git commit -a -m "new comment"
+        python -c "import my_package; assert my_package.__version__.startswith('0.0.0.dev1')"
+        git tag -a 0.0.1 -m "0.0.1"
+        python -c "import my_package; assert my_package.__version__ == '0.0.1'"
