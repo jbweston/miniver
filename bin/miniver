@@ -8,8 +8,9 @@ import argparse
 import tempfile
 import shutil
 import textwrap
+import glob
 from zipfile import ZipFile
-from importlib.util import find_spec
+from importlib.util import find_spec, spec_from_file_location, module_from_spec
 from urllib.request import urlretrieve
 
 if sys.version_info < (3, 5):
@@ -146,6 +147,14 @@ def get_parser():
         "package_directory", help="Directory to install 'miniver' into."
     )
     install_parser.set_defaults(dispatch=install)
+    # 'ver' command
+    ver_parser = subparsers.add_parser(
+        "ver", help="Get generated version"
+    )
+    ver_parser.add_argument(
+        "package_directory", help="Directory 'miniver' was installed."
+    )
+    ver_parser.set_defaults(dispatch=ver)
     return parser
 
 
@@ -190,6 +199,15 @@ def install(args):
         )
     )
     print("\n".join((msg, _setup_template)).format(package_dir=package_dir))
+
+
+def ver(args):
+    package_dir = args.package_directory
+    version_location = glob.glob(f"{package_dir}/**/_version.py")[0]
+    version_spec = spec_from_file_location("version", version_location)
+    version = module_from_spec(version_spec)
+    version_spec.loader.exec_module(version)
+    print(version.get_version())
 
 
 def main():
