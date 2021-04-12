@@ -203,7 +203,17 @@ def install(args):
 
 def ver(args):
     package_dir = args.package_directory
-    version_location = glob.glob(f"{package_dir}/**/_version.py")[0]
+    try:
+        version_location, = glob.glob(f"{package_dir}/**/_version.py", recursive=True)
+    except ValueError as err:
+        if "not enough" in str(err):
+            print(f"'_version.py' not found in '{package_dir}'", file=sys.stderr)
+            sys.exit(1)
+        elif "too many" in str(err):
+            print(f"More than 1 '_version.py' found in '{package_dir}'",  file=sys.stderr)
+            sys.exit(1)
+        else:
+            raise
     version_spec = spec_from_file_location("version", version_location)
     version = module_from_spec(version_spec)
     version_spec.loader.exec_module(version)
