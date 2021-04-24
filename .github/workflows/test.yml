@@ -39,12 +39,17 @@ jobs:
         pip install -e .
     - name: Test versioning of dummy project
       run: |
-        python -c "import my_package; assert my_package.__version__ == '0.0.0'"
         cd ../my_package
+        python -c "import my_package; assert my_package.__version__ == '0.0.0'"
+        [[ $(miniver ver my_package) = "0.0.0" ]] || exit 1
         echo "# Extra comment" >> setup.py
         python -c "import my_package; assert my_package.__version__.endswith('dirty')"
+        [[ $(miniver ver my_package) =~ dirty$ ]] || exit 1
         python -c "import my_package; assert my_package.__version__.startswith('0.0.0')"
+        [[ $(miniver ver my_package) =~ ^0\.0\.0 ]] || exit 1
         git commit -a -m "new comment"
         python -c "import my_package; assert my_package.__version__.startswith('0.0.0.dev1')"
+        [[ $(miniver ver my_package) =~ ^0\.0\.0\.dev1 ]] || exit 1
         git tag -a 0.0.1 -m "0.0.1"
         python -c "import my_package; assert my_package.__version__ == '0.0.1'"
+        [[ $(miniver ver my_package) = '0.0.1' ]] || exit 1
