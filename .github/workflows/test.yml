@@ -20,6 +20,10 @@ jobs:
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
         python --version
+    - name: Install miniver
+      run: |
+        pip install .
+        which miniver || exit 1
     - name: Set up dummy Python project with miniver
       run: |
         cd ..
