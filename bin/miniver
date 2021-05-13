@@ -193,7 +193,7 @@ def install(args):
     print("\n".join((msg, _setup_template)).format(package_dir=package_dir))
 
 
-def ver(args):
+def ver():
     cwd = os.path.abspath(".")
     try:
         version_location, = glob.glob(
@@ -230,7 +230,7 @@ def main():
         args.dispatch(args)
     else:
         args = argparse.Namespace(dispatch=ver)
-        args.dispatch(args)
+        args.dispatch()
 
 
 if __name__ == "__main__":
