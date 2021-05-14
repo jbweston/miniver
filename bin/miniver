@@ -229,8 +229,7 @@ def main():
     if "dispatch" in args:
         args.dispatch(args)
     else:
-        args = argparse.Namespace(dispatch=ver)
-        args.dispatch()
+        ver()
 
 
 if __name__ == "__main__":
