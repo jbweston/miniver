@@ -188,20 +188,21 @@ def _write_version(fname):
         )
 
 
-class _build_py(build_py_orig):
-    def run(self):
-        super().run()
-        _write_version(os.path.join(self.build_lib, package_name, STATIC_VERSION_FILE))
+def get_cmdclass(prefix_dir=""):
+    class _build_py(build_py_orig):
+        def run(self):
+            super().run()
+            _write_version(
+                os.path.join(
+                    self.build_lib, prefix_dir, package_name, STATIC_VERSION_FILE
+                )
+            )
 
+    class _sdist(sdist_orig):
+        def make_release_tree(self, base_dir, files):
+            super().make_release_tree(base_dir, files)
+            _write_version(
+                os.path.join(base_dir, prefix_dir, package_name, STATIC_VERSION_FILE)
+            )
 
-class _sdist(sdist_orig):
-    def make_release_tree(self, base_dir, files):
-        super().make_release_tree(base_dir, files)
-        if _package_root_inside_src:
-            p = os.path.join("src", package_name)
-        else:
-            p = package_name
-        _write_version(os.path.join(base_dir, p, STATIC_VERSION_FILE))
-
-
-cmdclass = dict(sdist=_sdist, build_py=_build_py)
+    return dict(sdist=_sdist, build_py=_build_py)
