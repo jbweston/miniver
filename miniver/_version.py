@@ -15,14 +15,6 @@ __all__ = []
 
 package_root = os.path.dirname(os.path.realpath(__file__))
 package_name = os.path.basename(package_root)
-distr_root = os.path.dirname(package_root)
-# If the package is inside a "src" directory the
-# distribution root is 1 level up.
-if os.path.split(distr_root)[1] == "src":
-    _package_root_inside_src = True
-    distr_root = os.path.dirname(distr_root)
-else:
-    _package_root_inside_src = False
 
 STATIC_VERSION_FILE = "_static_version.py"
 
@@ -70,23 +62,6 @@ def pep440_format(version_info):
 
 
 def get_version_from_git():
-    try:
-        p = subprocess.Popen(
-            ["git", "rev-parse", "--show-toplevel"],
-            cwd=distr_root,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
-        )
-    except OSError:
-        return
-    if p.wait() != 0:
-        return
-    if not os.path.samefile(p.communicate()[0].decode().rstrip("\n"), distr_root):
-        # The top-level directory of the current Git repository is not the same
-        # as the root directory of the distribution: do not extract the
-        # version from Git.
-        return
-
     # git describe --first-parent does not take into account tags from branches
     # that were merged-in. The '--long' flag gets us the 'dev' version and
     # git hash, '--always' returns the git hash even if there are no tags.
@@ -94,7 +69,7 @@ def get_version_from_git():
         try:
             p = subprocess.Popen(
                 ["git", "describe", "--long", "--always"] + opts,
-                cwd=distr_root,
+                cwd=package_root,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
             )
@@ -128,7 +103,7 @@ def get_version_from_git():
         labels.append(git)
 
     try:
-        p = subprocess.Popen(["git", "diff", "--quiet"], cwd=distr_root)
+        p = subprocess.Popen(["git", "diff", "--quiet"], cwd=package_root)
     except OSError:
         labels.append("confused")  # This should never happen.
     else:
@@ -169,9 +144,9 @@ def get_version_from_git_archive(version_info):
 __version__ = get_version()
 
 
-# The following section defines a module global 'cmdclass',
-# which can be used from setup.py. The 'package_name' and
-# '__version__' module globals are used (but not modified).
+# The following section defines a 'get_cmdclass' function
+# that can be used from setup.py. The '__version__' module
+# global is used (but not modified).
 
 
 def _write_version(fname):
