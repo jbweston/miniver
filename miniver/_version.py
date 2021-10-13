@@ -188,13 +188,20 @@ def _write_version(fname):
         )
 
 
-def get_cmdclass(prefix_dir=""):
+def get_cmdclass(pkg_source_path):
     class _build_py(build_py_orig):
         def run(self):
             super().run()
+
+            src_marker = "".join(["src", os.path.sep])
+
+            if pkg_source_path.startswith(src_marker):
+                path = pkg_source_path[len(src_marker):]
+            else:
+                path = pkg_source_path
             _write_version(
                 os.path.join(
-                    self.build_lib, prefix_dir, package_name, STATIC_VERSION_FILE
+                    self.build_lib, path, STATIC_VERSION_FILE
                 )
             )
 
@@ -202,7 +209,7 @@ def get_cmdclass(prefix_dir=""):
         def make_release_tree(self, base_dir, files):
             super().make_release_tree(base_dir, files)
             _write_version(
-                os.path.join(base_dir, prefix_dir, package_name, STATIC_VERSION_FILE)
+                os.path.join(base_dir, pkg_source_path, STATIC_VERSION_FILE)
             )
 
     return dict(sdist=_sdist, build_py=_build_py)
