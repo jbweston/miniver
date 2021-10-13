@@ -15,32 +15,37 @@ jobs:
     - uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Set up Git
+    - name: Set up Git and Pip
       run: |
         git config --global user.email "you@example.com"
         git config --global user.name "Your Name"
+        python -m pip install --upgrade pip
+        python -m pip install wheel
+        git --version
         python --version
-    - name: Set up dummy Python project with miniver
+    - name: Install miniver
+      run: |
+        pip install .
+    - name: Set up minimal python packages
       run: |
         cd ..
-        git init my_package
-        cd my_package
-        python ../miniver/ci/create_package.py
-        git add .
-        git commit -m "Initialization of package"
-        git tag -a 0.0.0 -m "First version for miniver"
-    - name: Install dummy Python project with miniver
-      run: |
-        cd ../my_package
-        pip install -e .
-    - name: Test versioning of dummy project
-      run: |
-        python -c "import my_package; assert my_package.__version__ == '0.0.0'"
-        cd ../my_package
-        echo "# Extra comment" >> setup.py
-        python -c "import my_package; assert my_package.__version__.endswith('dirty')"
-        python -c "import my_package; assert my_package.__version__.startswith('0.0.0')"
-        git commit -a -m "new comment"
-        python -c "import my_package; assert my_package.__version__.startswith('0.0.0.dev1')"
-        git tag -a 0.0.1 -m "0.0.1"
-        python -c "import my_package; assert my_package.__version__ == '0.0.1'"
+        # simple package
+        python miniver/ci/create_package.py simple-distr simple_pkg
+        # simple package in 'src' layout
+        python miniver/ci/create_package.py simple-src-distr simple_src_pkg --src-layout
+        # namespace package
+        python miniver/ci/create_package.py ns-distr nspkg.simple_pkg
+        # namespace package in 'src' layout
+        python miniver/ci/create_package.py ns-src-distr nspkg.simple_src_pkg --src-layout
+    - name: Test versioning of simple package
+      shell: bash
+      run: cd .. && miniver/ci/test_package.sh simple-distr simple_pkg
+    - name: Test versioning of simple src-layout package
+      shell: bash
+      run: cd .. && miniver/ci/test_package.sh simple-src-distr simple_src_pkg
+    - name: Test versioning of namespace package
+      shell: bash
+      run: cd .. && miniver/ci/test_package.sh ns-distr nspkg.simple_pkg
+    - name: Test versioning of namespace src-layout package
+      shell: bash
+      run: cd .. && miniver/ci/test_package.sh ns-src-distr nspkg.simple_src_pkg
