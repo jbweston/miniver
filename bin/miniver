@@ -147,6 +147,17 @@ def get_parser():
         "package_directory", help="Directory to install 'miniver' into."
     )
     install_parser.set_defaults(dispatch=install)
+    # 'ver' command
+    ver_parser = subparsers.add_parser(
+        "ver", help="Display generated version",
+    )
+    ver_parser.add_argument(
+        "search_path",
+        help="Path to begin search for version files",
+        nargs="?",
+        default=".",
+    )
+    ver_parser.set_defaults(dispatch=ver)
     return parser
 
 
@@ -193,23 +204,23 @@ def install(args):
     print("\n".join((msg, _setup_template)).format(package_dir=package_dir))
 
 
-def ver():
-    cwd = os.path.abspath(".")
+def ver(args):
+    search_path = args.search_path
     try:
         version_location, = glob.glob(
-            os.path.join(cwd, "**", "_version.py"),
+            os.path.join(search_path, "**", "_version.py"),
             recursive=True,
         )
     except ValueError as err:
         if "not enough" in str(err):
             print(
-                "'_version.py' not found in '{}'".format(cwd),
+                "'_version.py' not found in '{}'".format(search_path),
                 file=sys.stderr,
             )
             sys.exit(1)
         elif "too many" in str(err):
             print(
-                "More than 1 '_version.py' found in '{}'".format(cwd),
+                "More than 1 '_version.py' found in '{}'".format(search_path),
                 file=sys.stderr,
             )
             sys.exit(1)
@@ -229,7 +240,8 @@ def main():
     if "dispatch" in args:
         args.dispatch(args)
     else:
-        ver()
+        args = parser.parse_args(["ver"])
+        args.dispatch(args)
 
 
 if __name__ == "__main__":
