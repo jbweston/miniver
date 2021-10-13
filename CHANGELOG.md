@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 ### Added
 - Add a 'ver' command that prints the detected version
+- Running 'miniver' without any arguments invokes the 'ver' command
 
 ## [0.7.0] - 2020-08-15
 ### Added
