@@ -77,7 +77,7 @@ def get_version_and_cmdclass(package_name):
                                    os.path.join(package_name, '_version.py'))
     module = module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.__version__, module.cmdclass
+    return module.__version__, module.get_cmdclass()
 
 
 version, cmdclass = get_version_and_cmdclass('my_package')
