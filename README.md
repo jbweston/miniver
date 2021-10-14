@@ -32,7 +32,7 @@ works with Python 2](https://github.com/cmarquardt/miniver2)
 ## Usage
 The simplest way to use Miniver is to run the following in your project root:
 ```
-curl https://raw.githubusercontent.com/jbweston/miniver/master/bin/miniver | python - install <your_package_directory>
+curl https://raw.githubusercontent.com/jbweston/miniver/master/miniver/app.py | python - install <your_package_directory>
 ```
 This will grab the latest files from GitHub and set up Miniver for your project.
 
@@ -69,15 +69,18 @@ del _version
 ```python
 # Your project's setup.py
 
+from setuptools import setup
+
 # Loads _version.py module without importing the whole package.
-def get_version_and_cmdclass(package_name):
+def get_version_and_cmdclass(pkg_path):
     import os
     from importlib.util import module_from_spec, spec_from_file_location
-    spec = spec_from_file_location('version',
-                                   os.path.join(package_name, '_version.py'))
+    spec = spec_from_file_location(
+        'version', os.path.join(pkg_path, '_version.py'),
+    )
     module = module_from_spec(spec)
     spec.loader.exec_module(module)
-    return module.__version__, module.get_cmdclass()
+    return module.__version__, module.get_cmdclass(pkg_path)
 
 
 version, cmdclass = get_version_and_cmdclass('my_package')
