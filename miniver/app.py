@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # This file is part of 'miniver': https://github.com/jbweston/miniver
 
 import sys
@@ -54,7 +53,7 @@ _setup_template = textwrap.dedent(
         return module.__version__, module.get_cmdclass(pkg_path)
 
 
-    version, cmdclass = get_version_and_cmdclass("{package_dir}")
+    version, cmdclass = get_version_and_cmdclass(r"{package_dir}")
 
 
     setup(
@@ -203,11 +202,13 @@ def install(args):
             "You still have to copy the following snippet into your 'setup.py':"
         )
     )
-    print("\n".join((msg, _setup_template)).format(package_dir=package_dir))
+    # Use stdout for setup template only, so it can be redirected to 'setup.py'
+    print(msg.format(package_dir=package_dir), file=sys.stderr)
+    print(_setup_template.format(package_dir=package_dir), file=sys.stdout)
 
 
 def ver(args):
-    search_path = args.search_path
+    search_path = os.path.realpath(args.search_path)
     try:
         version_location, = glob.glob(
             os.path.join(search_path, "**", "_version.py"),
@@ -246,5 +247,7 @@ def main():
         args.dispatch(args)
 
 
+# This is needed when using the script directly from GitHub, but not if
+# miniver is installed.
 if __name__ == "__main__":
     main()

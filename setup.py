@@ -50,5 +50,9 @@ setup(
     ],
     packages=find_packages("."),
     cmdclass=cmdclass,
-    scripts=["bin/miniver"],
+    entry_points={
+        "console_scripts": [
+            "miniver=miniver.app:main",
+        ]
+    },
 )

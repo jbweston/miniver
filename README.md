@@ -32,7 +32,7 @@ works with Python 2](https://github.com/cmarquardt/miniver2)
 ## Usage
 The simplest way to use Miniver is to run the following in your project root:
 ```
-curl https://raw.githubusercontent.com/jbweston/miniver/master/bin/miniver | python - install <your_package_directory>
+curl https://raw.githubusercontent.com/jbweston/miniver/master/miniver/app.py | python - install <your_package_directory>
 ```
 This will grab the latest files from GitHub and set up Miniver for your project.
 
