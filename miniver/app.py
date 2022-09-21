@@ -90,10 +90,7 @@ def _line_in_file(to_find, filename):
     assert "\n" not in to_find
     try:
         with open(filename) as f:
-            for line in f:
-                if to_find in line:
-                    return True
-            return False
+            return any(to_find in line for line in f)
     except FileNotFoundError:
         return False
 
