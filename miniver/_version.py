@@ -51,8 +51,7 @@ def pep440_format(version_info):
             version_parts.append(".dev{}".format(dev))
 
     if labels:
-        version_parts.append("+")
-        version_parts.append(".".join(labels))
+        version_parts.extend(("+", ".".join(labels)))
 
     return "".join(version_parts)
 
@@ -63,7 +62,7 @@ def get_version_from_git():
     # git describe --first-parent does not take into account tags from branches
     # that were merged-in. The '--long' flag gets us the 'dev' version and
     # git hash, '--always' returns the git hash even if there are no tags.
-    for opts in [["--first-parent"], []]:
+    for opts in (["--first-parent"], []):
         try:
             p = subprocess.Popen(
                 ["git", "describe", "--long", "--always"] + opts,
