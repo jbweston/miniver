@@ -30,6 +30,15 @@ popd
 test_version ".startswith('0.0.0')"
 test_version ".endswith('dirty')"
 
+# Test staged modifications result in a dirty tree
+pushd $distr
+git add .
+echo "Staged modifications"
+popd
+
+test_version ".startswith('0.0.0')"
+test_version ".endswith('dirty')"
+
 pushd $distr
 git commit -a -m "new comment"
 echo "Committed changes"
