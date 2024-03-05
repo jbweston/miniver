@@ -101,11 +101,17 @@ def get_version_from_git():
         labels.append(git)
 
     try:
-        p = subprocess.Popen(["git", "diff", "--quiet"], cwd=package_root)
+        p = subprocess.Popen(
+            ["git", "describe", "--dirty"],
+            cwd=package_root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
     except OSError:
         labels.append("confused")  # This should never happen.
     else:
-        if p.wait() == 1:
+        dirty_output = p.communicate()[0].decode().strip("\n")
+        if dirty_output.endswith("dirty"):
             labels.append("dirty")
 
     return Version(release, dev, labels)
@@ -172,13 +178,11 @@ def get_cmdclass(pkg_source_path):
             src_marker = "".join(["src", os.path.sep])
 
             if pkg_source_path.startswith(src_marker):
-                path = pkg_source_path[len(src_marker):]
+                path = pkg_source_path[len(src_marker) :]
             else:
                 path = pkg_source_path
             _write_version(
-                os.path.join(
-                    self.build_lib, path, STATIC_VERSION_FILE
-                )
+                os.path.join(self.build_lib, path, STATIC_VERSION_FILE)
             )
 
     class _sdist(sdist_orig):
