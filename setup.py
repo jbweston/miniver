@@ -3,10 +3,6 @@
 from setuptools import setup, find_packages
 import sys
 
-if sys.version_info < (3, 5):
-    print("Miniver needs at least Python 3.5.")
-    sys.exit(1)
-
 
 # Loads version.py module without importing the whole package.
 def get_version_and_cmdclass(pkg_path):
@@ -30,6 +26,7 @@ setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     version=version,
+    python_requires=">=3.5",
     url="https://github.com/jbweston/miniver",
     author="Joseph Weston and Christoph Groth",
     author_email="joseph@weston.cloud",
