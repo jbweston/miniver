@@ -53,14 +53,13 @@ def main():
         rmtree(args.distribution, ignore_errors=True)
 
     with log("Initializing git repository in '{}'".format(distr)):
-        run("git init {}".format(distr), shell=True, check=True, stdout=PIPE, stderr=PIPE)
+        run("git init {}".format(distr), check=True, stdout=PIPE, stderr=PIPE)
         chdir(distr)
         makedirs(path)
 
     with log("Installing miniver in '{}'".format(os.path.join(distr, path))):
         r = run(
             "miniver install {}".format(path),
-            shell=True,
             check=True,
             stdout=PIPE,
             stderr=PIPE,
